@@ -37,16 +37,16 @@ const MobileNav: React.FC = () => {
     const { cartCount, user } = useAppContext();
 
     const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
-        `flex flex-col items-center justify-center flex-1 py-2 transition-colors duration-300 ${
+        `flex flex-col items-center justify-center flex-1 transition-colors duration-300 ${
             isActive ? 'text-primary' : 'text-gray-400 hover:text-primary'
         }`;
 
     return (
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-dark-card/90 backdrop-blur-sm border-t-2 border-dark-border z-50 flex justify-around h-[72px]">
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-dark-card/90 backdrop-blur-sm border-t-2 border-dark-border z-50 flex justify-around h-16">
             <NavLink to="/" className={navLinkClasses}>
                 {({ isActive }) => (
                     <>
-                        <div className={`p-3 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
+                        <div className={`p-2 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
                             <HomeIcon />
                         </div>
                         <span className="text-xs">Início</span>
@@ -56,7 +56,7 @@ const MobileNav: React.FC = () => {
             <NavLink to="/products" className={navLinkClasses}>
                 {({ isActive }) => (
                     <>
-                        <div className={`p-3 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
+                        <div className={`p-2 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
                             <ProductsIcon />
                         </div>
                         <span className="text-xs">Loot</span>
@@ -66,7 +66,7 @@ const MobileNav: React.FC = () => {
             <NavLink to="/favorites" className={navLinkClasses}>
                  {({ isActive }) => (
                     <>
-                        <div className={`p-3 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
+                        <div className={`p-2 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
                             <HeartIcon />
                         </div>
                         <span className="text-xs">Favoritos</span>
@@ -76,10 +76,10 @@ const MobileNav: React.FC = () => {
             <NavLink to="/cart" className={navLinkClasses}>
                  {({ isActive }) => (
                     <>
-                        <div className={`relative p-3 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
+                        <div className={`relative p-2 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
                             <CartIcon />
                             {cartCount > 0 && (
-                                <span className="absolute top-1 right-1 bg-secondary text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold border border-dark-card">
+                                <span className="absolute top-0 right-0 bg-secondary text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold border border-dark-card">
                                     {cartCount}
                                 </span>
                             )}
@@ -91,7 +91,7 @@ const MobileNav: React.FC = () => {
             <NavLink to={user ? "/account" : "/login"} className={navLinkClasses}>
                 {({ isActive }) => (
                     <>
-                        <div className={`p-3 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
+                        <div className={`p-2 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
                             <UserIcon />
                         </div>
                         <span className="text-xs">Conta</span>
