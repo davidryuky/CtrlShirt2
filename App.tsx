@@ -19,6 +19,7 @@ import ContactPage from './pages/public/ContactPage';
 import CartPage from './pages/public/CartPage';
 import CheckoutPage from './pages/public/CheckoutPage';
 import OrderConfirmationPage from './pages/public/OrderConfirmationPage';
+import FavoritesPage from './pages/public/FavoritesPage';
 
 // Import Auth Pages
 import AuthPage from './pages/auth/AuthPage';
@@ -73,6 +74,7 @@ function App() {
             <Route path="order-confirmation" element={<OrderConfirmationPage />} />
             <Route path="login" element={<AuthPage />} />
             <Route path="account" element={<AccountPage />} />
+            <Route path="favorites" element={<FavoritesPage />} />
           </Route>
 
           {/* Admin Routes */}

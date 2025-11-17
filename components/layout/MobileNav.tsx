@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
@@ -12,6 +11,12 @@ const HomeIcon = ({ className = "h-6 w-6" }: { className?: string }) => (
 const ProductsIcon = ({ className = "h-6 w-6" }: { className?: string }) => (
     <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+    </svg>
+);
+
+const HeartIcon = ({ className = "h-6 w-6" }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z" />
     </svg>
 );
 
@@ -32,30 +37,66 @@ const MobileNav: React.FC = () => {
     const { cartCount, user } = useAppContext();
 
     const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
-        `flex flex-col items-center justify-center flex-1 py-2 text-xs transition-colors duration-200 ${isActive ? 'text-primary' : 'text-gray-400 hover:text-primary'}`;
+        `flex flex-col items-center justify-center flex-1 py-2 transition-colors duration-300 ${
+            isActive ? 'text-primary' : 'text-gray-400 hover:text-primary'
+        }`;
 
     return (
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-dark-card border-t-2 border-dark-border z-50 flex">
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-dark-card/90 backdrop-blur-sm border-t-2 border-dark-border z-50 flex justify-around h-[72px]">
             <NavLink to="/" className={navLinkClasses}>
-                <HomeIcon />
-                <span>Início</span>
+                {({ isActive }) => (
+                    <>
+                        <div className={`p-3 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
+                            <HomeIcon />
+                        </div>
+                        <span className="text-xs">Início</span>
+                    </>
+                )}
             </NavLink>
             <NavLink to="/products" className={navLinkClasses}>
-                <ProductsIcon />
-                <span>Loot</span>
-            </NavLink>
-            <NavLink to="/cart" className={`${navLinkClasses} relative`}>
-                <CartIcon />
-                {cartCount > 0 && (
-                    <span className="absolute top-1 right-[calc(50%-20px)] bg-secondary text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold">
-                        {cartCount}
-                    </span>
+                {({ isActive }) => (
+                    <>
+                        <div className={`p-3 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
+                            <ProductsIcon />
+                        </div>
+                        <span className="text-xs">Loot</span>
+                    </>
                 )}
-                <span>Carrinho</span>
+            </NavLink>
+            <NavLink to="/favorites" className={navLinkClasses}>
+                 {({ isActive }) => (
+                    <>
+                        <div className={`p-3 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
+                            <HeartIcon />
+                        </div>
+                        <span className="text-xs">Favoritos</span>
+                    </>
+                )}
+            </NavLink>
+            <NavLink to="/cart" className={navLinkClasses}>
+                 {({ isActive }) => (
+                    <>
+                        <div className={`relative p-3 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
+                            <CartIcon />
+                            {cartCount > 0 && (
+                                <span className="absolute top-1 right-1 bg-secondary text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold border border-dark-card">
+                                    {cartCount}
+                                </span>
+                            )}
+                        </div>
+                        <span className="text-xs">Carrinho</span>
+                    </>
+                )}
             </NavLink>
             <NavLink to={user ? "/account" : "/login"} className={navLinkClasses}>
-                <UserIcon />
-                <span>Conta</span>
+                {({ isActive }) => (
+                    <>
+                        <div className={`p-3 rounded-full transition-colors duration-200 ${isActive ? 'bg-primary/10' : ''}`}>
+                            <UserIcon />
+                        </div>
+                        <span className="text-xs">Conta</span>
+                    </>
+                )}
             </NavLink>
         </nav>
     );

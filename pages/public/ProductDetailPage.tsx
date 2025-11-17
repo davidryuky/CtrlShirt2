@@ -74,72 +74,83 @@ const ProductDetailPage: React.FC = () => {
         return <div className="text-center text-secondary text-2xl font-press-start">Item não encontrado!</div>;
     }
 
-    const availableSizes = product.sizes.filter(s => s.stock > 0);
-
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-             {/* Image Gallery */}
-            <div>
-                <div className="aspect-square bg-dark-card rounded-lg border-2 border-dark-border overflow-hidden mb-4">
-                    <img src={mainImage} alt={product.name} className="w-full h-full object-cover" />
-                </div>
-                <div className="flex space-x-2">
-                    {product.images.map((img, index) => (
-                        <button key={index} onClick={() => setMainImage(img)} className={`w-20 h-20 rounded-md overflow-hidden border-2 ${mainImage === img ? 'border-primary' : 'border-transparent'}`}>
-                            <img src={img} alt={`${product.name} thumbnail ${index + 1}`} className="w-full h-full object-cover" />
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            {/* Product Info */}
-            <div>
-                <h1 className="text-4xl font-bold text-white mb-2">{product.name}</h1>
-                <p className="text-4xl font-bold text-accent mb-4">R$ {product.price.toFixed(2).replace('.', ',')}</p>
-                <p className="text-gray-300 leading-relaxed mb-6">{product.description}</p>
-
-                {/* Size Selector */}
-                <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-white mb-2">Tamanho:</h3>
-                    <div className="flex flex-wrap gap-2">
-                        {product.sizes.map(s => (
-                            <button 
-                                key={s.size}
-                                onClick={() => s.stock > 0 && setSelectedSize(s.size)}
-                                disabled={s.stock === 0}
-                                className={`w-14 h-14 rounded-md border-2 font-bold transition-colors duration-200 ${
-                                    selectedSize === s.size ? 'bg-primary text-dark-bg border-primary' : 'bg-dark-card border-dark-border'
-                                } ${s.stock > 0 ? 'hover:border-primary cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
-                            >
-                                {s.size}
+        <div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                 {/* Image Gallery */}
+                <div>
+                    <div className="aspect-square bg-dark-card rounded-lg border-2 border-dark-border overflow-hidden mb-4">
+                        <img src={mainImage} alt={product.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex space-x-2">
+                        {product.images.map((img, index) => (
+                            <button key={index} onClick={() => setMainImage(img)} className={`w-20 h-20 rounded-md overflow-hidden border-2 ${mainImage === img ? 'border-primary' : 'border-transparent'}`}>
+                                <img src={img} alt={`${product.name} thumbnail ${index + 1}`} className="w-full h-full object-cover" />
                             </button>
                         ))}
                     </div>
                 </div>
 
-                {/* Add to Cart Button */}
-                <button
-                    onClick={handleAddToCart}
-                    className="w-full bg-primary text-dark-bg font-bold py-4 px-8 rounded-md text-lg hover:bg-white hover:shadow-lg transition-all duration-300 shadow-glow-primary"
-                >
-                    ADICIONAR AO CARRINHO
-                </button>
-                {notification && <p className="text-center mt-4 text-accent">{notification}</p>}
-
-                {/* Reviews */}
-                <div className="mt-12">
-                    <h3 className="text-2xl font-bold text-white mb-4">Avaliações</h3>
-                    <div className="space-y-6">
-                        {product.reviews.map(review => (
-                            <div key={review.id} className="bg-dark-card p-4 rounded-lg border border-dark-border">
-                                <div className="flex justify-between items-center mb-2">
-                                    <p className="font-semibold text-white">{review.author}</p>
-                                    <StarRating rating={review.rating} />
-                                </div>
-                                <p className="text-gray-400">{review.comment}</p>
-                            </div>
-                        ))}
+                {/* Product Info */}
+                <div>
+                    <h1 className="text-4xl font-bold text-white mb-2">{product.name}</h1>
+                    <p className="text-4xl font-bold text-accent mb-6">R$ {product.price.toFixed(2).replace('.', ',')}</p>
+                    
+                    {/* Size Selector */}
+                    <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-white mb-2">Tamanho:</h3>
+                        <div className="flex flex-wrap gap-2">
+                            {product.sizes.map(s => (
+                                <button 
+                                    key={s.size}
+                                    onClick={() => s.stock > 0 && setSelectedSize(s.size)}
+                                    disabled={s.stock === 0}
+                                    className={`w-14 h-14 rounded-md border-2 font-bold transition-colors duration-200 ${
+                                        selectedSize === s.size ? 'bg-primary text-dark-bg border-primary' : 'bg-dark-card border-dark-border'
+                                    } ${s.stock > 0 ? 'hover:border-primary cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
+                                >
+                                    {s.size}
+                                </button>
+                            ))}
+                        </div>
                     </div>
+
+                    {/* Add to Cart Button */}
+                    <button
+                        onClick={handleAddToCart}
+                        className="w-full bg-primary text-dark-bg font-bold py-4 px-8 rounded-md text-lg hover:bg-white hover:shadow-lg transition-all duration-300 shadow-glow-primary"
+                    >
+                        ADICIONAR AO CARRINHO
+                    </button>
+                    {notification && <p className="text-center mt-4 text-accent">{notification}</p>}
+                </div>
+            </div>
+
+            {/* Description */}
+            <div className="mt-12">
+                <h3 className="text-2xl font-bold text-white mb-4">Descrição do Produto</h3>
+                <div className="bg-dark-card p-6 rounded-lg border border-dark-border">
+                    <p className="text-gray-300 leading-relaxed">{product.description}</p>
+                </div>
+            </div>
+            
+            {/* Reviews */}
+            <div className="mt-12">
+                <h3 className="text-2xl font-bold text-white mb-4">Avaliações</h3>
+                <div className="space-y-6">
+                    {product.reviews.length > 0 ? product.reviews.map(review => (
+                        <div key={review.id} className="bg-dark-card p-4 rounded-lg border border-dark-border">
+                            <div className="flex justify-between items-center mb-2">
+                                <p className="font-semibold text-white">{review.author}</p>
+                                <StarRating rating={review.rating} />
+                            </div>
+                            <p className="text-gray-400">{review.comment}</p>
+                        </div>
+                    )) : (
+                        <div className="bg-dark-card p-4 rounded-lg border border-dark-border text-center text-gray-400">
+                            <p>Este item ainda não possui avaliações. Seja o primeiro a avaliar!</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
