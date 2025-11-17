@@ -60,24 +60,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <StarRating rating={avgRating} />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
             <p className="text-2xl font-bold text-accent">
                 R$ {product.price.toFixed(2).replace('.', ',')}
             </p>
-            <span className="text-xs font-bold bg-accent/20 text-accent px-2 py-1 rounded-md">5% Off no Pix</span>
+            <span className="text-xs font-bold bg-accent/20 text-accent px-2 py-1 rounded-md mt-1 sm:mt-0 w-fit">5% Off no Pix</span>
         </div>
 
         <div className="mt-auto pt-4 flex gap-2">
             <button
                 aria-label="Adicionar aos Favoritos"
-                className="p-3 bg-dark-border rounded-md text-gray-400 hover:text-secondary hover:bg-secondary/20 transition-colors"
+                className="p-2 sm:p-3 bg-dark-border rounded-md text-gray-400 hover:text-secondary hover:bg-secondary/20 transition-colors"
             >
                 <HeartIcon className="w-5 h-5" />
             </button>
             <button 
                 onClick={handleAddToCart}
                 disabled={!hasStock || added}
-                className={`flex-grow font-bold py-2 px-4 rounded-md transition-colors duration-200
+                className={`flex-grow font-bold text-sm sm:text-base py-2 px-3 sm:px-4 rounded-md transition-colors duration-200
                     ${!hasStock ? 'bg-gray-600 text-gray-400 cursor-not-allowed' : 
                     added ? 'bg-green-500 text-white' : 
                     'bg-primary text-dark-bg hover:bg-white'}`}

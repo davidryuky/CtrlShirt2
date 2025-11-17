@@ -28,17 +28,19 @@ const generateReviews = (productId: string): Review[] => {
   return reviews;
 };
 
+const newProductImage = 'https://i.postimg.cc/vTzXBqJ6/Image-fx.jpg';
+
 const initialProducts: Product[] = [
-  { id: '1', name: 'Pixel Invader', slug: 'pixel-invader', description: 'Uma camiseta clássica para os amantes de 8-bit.', price: 79.90, categoryId: '1', images: ['https://picsum.photos/seed/p1/800/800', 'https://picsum.photos/seed/p1-2/800/800'], sizes: generateSizes(), reviews: generateReviews('1'), tags: ['8-bit', 'retro'] },
-  { id: '2', name: 'Console Wars Veteran', slug: 'console-wars-veteran', description: 'Mostre de que lado você estava.', price: 89.90, categoryId: '1', images: ['https://picsum.photos/seed/p2/800/800'], sizes: generateSizes(), reviews: generateReviews('2'), tags: ['console', 'retro'] },
-  { id: '3', name: 'Galactic Empire Recruit', slug: 'galactic-empire-recruit', description: 'Junte-se ao lado sombrio, nós temos cookies.', price: 84.90, categoryId: '2', images: ['https://picsum.photos/seed/p3/800/800'], sizes: generateSizes(), reviews: generateReviews('3'), tags: ['sci-fi', 'space'] },
-  { id: '4', name: 'Tardis Blueprint', slug: 'tardis-blueprint', description: 'Maior por dentro.', price: 79.90, categoryId: '2', images: ['https://picsum.photos/seed/p4/800/800'], sizes: generateSizes(), reviews: generateReviews('4'), tags: ['sci-fi', 'doctor'] },
-  { id: '5', name: 'Shonen Power Level', slug: 'shonen-power-level', description: 'É mais de 9000!', price: 99.90, categoryId: '3', images: ['https://picsum.photos/seed/p5/800/800'], sizes: generateSizes(), reviews: generateReviews('5'), tags: ['anime', 'shonen'] },
-  { id: '6', name: 'Ramen Ichiraku', slug: 'ramen-ichiraku', description: 'O melhor ramen de Konoha.', price: 79.90, categoryId: '3', images: ['https://picsum.photos/seed/p6/800/800'], sizes: generateSizes(), reviews: generateReviews('6'), tags: ['anime', 'naruto'] },
-  { id: '7', name: 'Hello, World!', slug: 'hello-world', description: 'O primeiro passo de todo dev.', price: 74.90, categoryId: '4', images: ['https://picsum.photos/seed/p7/800/800'], sizes: generateSizes(), reviews: generateReviews('7'), tags: ['code', 'dev'] },
-  { id: '8', name: 'Git Commit', slug: 'git-commit', description: 'git commit -m "Nova camiseta estilosa"', price: 84.90, categoryId: '4', images: ['https://picsum.photos/seed/p8/800/800'], sizes: generateSizes(), reviews: generateReviews('8'), tags: ['code', 'git'] },
-  { id: '9', name: 'It\'s a feature', slug: 'its-a-feature', description: 'Não é um bug, é uma feature.', price: 79.90, categoryId: '5', images: ['https://picsum.photos/seed/p9/800/800'], sizes: generateSizes(), reviews: generateReviews('9'), tags: ['humor', 'dev'] },
-  { id: '10', name: 'D20 Critical Hit', slug: 'd20-critical-hit', description: 'Para os mestres de RPG.', price: 89.90, categoryId: '5', images: ['https://picsum.photos/seed/p10/800/800'], sizes: generateSizes(), reviews: generateReviews('10'), tags: ['rpg', 'dnd'] },
+  { id: '1', name: 'Pixel Invader', slug: 'pixel-invader', description: 'Uma camiseta clássica para os amantes de 8-bit.', price: 79.90, categoryId: '1', images: [newProductImage], sizes: generateSizes(), reviews: generateReviews('1'), tags: ['8-bit', 'retro'] },
+  { id: '2', name: 'Console Wars Veteran', slug: 'console-wars-veteran', description: 'Mostre de que lado você estava.', price: 89.90, categoryId: '1', images: [newProductImage], sizes: generateSizes(), reviews: generateReviews('2'), tags: ['console', 'retro'] },
+  { id: '3', name: 'Galactic Empire Recruit', slug: 'galactic-empire-recruit', description: 'Junte-se ao lado sombrio, nós temos cookies.', price: 84.90, categoryId: '2', images: [newProductImage], sizes: generateSizes(), reviews: generateReviews('3'), tags: ['sci-fi', 'space'] },
+  { id: '4', name: 'Tardis Blueprint', slug: 'tardis-blueprint', description: 'Maior por dentro.', price: 79.90, categoryId: '2', images: [newProductImage], sizes: generateSizes(), reviews: generateReviews('4'), tags: ['sci-fi', 'doctor'] },
+  { id: '5', name: 'Shonen Power Level', slug: 'shonen-power-level', description: 'É mais de 9000!', price: 99.90, categoryId: '3', images: [newProductImage], sizes: generateSizes(), reviews: generateReviews('5'), tags: ['anime', 'shonen'] },
+  { id: '6', name: 'Ramen Ichiraku', slug: 'ramen-ichiraku', description: 'O melhor ramen de Konoha.', price: 79.90, categoryId: '3', images: [newProductImage], sizes: generateSizes(), reviews: generateReviews('6'), tags: ['anime', 'naruto'] },
+  { id: '7', name: 'Hello, World!', slug: 'hello-world', description: 'O primeiro passo de todo dev.', price: 74.90, categoryId: '4', images: [newProductImage], sizes: generateSizes(), reviews: generateReviews('7'), tags: ['code', 'dev'] },
+  { id: '8', name: 'Git Commit', slug: 'git-commit', description: 'git commit -m "Nova camiseta estilosa"', price: 84.90, categoryId: '4', images: [newProductImage], sizes: generateSizes(), reviews: generateReviews('8'), tags: ['code', 'git'] },
+  { id: '9', name: 'It\'s a feature', slug: 'its-a-feature', description: 'Não é um bug, é uma feature.', price: 79.90, categoryId: '5', images: [newProductImage], sizes: generateSizes(), reviews: generateReviews('9'), tags: ['humor', 'dev'] },
+  { id: '10', name: 'D20 Critical Hit', slug: 'd20-critical-hit', description: 'Para os mestres de RPG.', price: 89.90, categoryId: '5', images: [newProductImage], sizes: generateSizes(), reviews: generateReviews('10'), tags: ['rpg', 'dnd'] },
 ];
 
 const initialUsers: User[] = [

@@ -73,7 +73,7 @@ const HomePage: React.FC = () => {
             {/* Featured Products */}
             <section>
                 <h2 className="text-3xl font-press-start text-white mb-6">Itens em Destaque</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                     {featuredProducts.map(product => (
                         <ProductCard key={product.id} product={product} />
                     ))}
@@ -83,7 +83,7 @@ const HomePage: React.FC = () => {
             {/* New Arrivals */}
              <section>
                 <h2 className="text-3xl font-press-start text-white mb-6">Novos Drops</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                     {newArrivals.map(product => (
                         <ProductCard key={product.id} product={product} />
                     ))}
