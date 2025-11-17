@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CtrlShirt - Your Geek T-Shirt Loot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              'press-start': ['"Press Start 2P"', 'cursive'],
+              'sans': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              'primary': '#00f6ff',
+              'secondary': '#ff00c1',
+              'accent': '#9eff00',
+              'dark-bg': '#0a0a0a',
+              'dark-card': '#1a1a1a',
+              'dark-border': '#2a2a2a',
+            },
+            boxShadow: {
+              'glow-primary': '0 0 15px rgba(0, 246, 255, 0.5)',
+              'glow-secondary': '0 0 15px rgba(255, 0, 193, 0.5)',
+            },
+            keyframes: {
+              'hologram': {
+                '0%, 100%': { opacity: '0.8', filter: 'hue-rotate(0deg)' },
+                '50%': { opacity: '1', filter: 'hue-rotate(20deg)' },
+              }
+            },
+            animation: {
+              'hologram': 'hologram 3s ease-in-out infinite',
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6"
+  }
+}
+</script>
+</head>
+  <body class="bg-dark-bg text-gray-200 font-sans">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
