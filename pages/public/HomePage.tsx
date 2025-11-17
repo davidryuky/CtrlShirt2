@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Product, Category } from '../../types';
@@ -37,14 +38,20 @@ const HomePage: React.FC = () => {
     return (
         <div className="space-y-16">
             {/* Hero Section */}
-            <section className="bg-dark-card p-8 md:p-12 rounded-lg border-2 border-primary shadow-glow-primary text-center">
-                <h1 className="text-3xl md:text-5xl font-press-start text-primary mb-4 animate-hologram">NEW LOOT DROPPED!</h1>
-                <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-8">
-                    As melhores estampas do universo geek, com qualidade lendária para o seu inventário.
-                </p>
-                <Link to="/products" className="bg-primary text-dark-bg font-bold py-3 px-8 rounded-md text-lg hover:bg-white hover:shadow-lg transition-all duration-300">
-                    VER TODO O LOOT
-                </Link>
+            <section 
+                className="relative h-96 rounded-lg overflow-hidden flex items-center justify-center text-center p-4 border-2 border-primary shadow-glow-primary"
+                style={{ backgroundImage: "url('https://picsum.photos/seed/geek-bg/1920/1080')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+            >
+                <div className="absolute inset-0 bg-dark-bg bg-opacity-70 backdrop-blur-xs"></div>
+                <div className="relative z-10">
+                    <h1 className="text-4xl md:text-6xl font-press-start text-primary mb-4 drop-shadow-lg animate-hologram">NEW LOOT DROPPED!</h1>
+                    <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-8">
+                        As melhores estampas do universo geek, com qualidade lendária para o seu inventário.
+                    </p>
+                    <Link to="/products" className="bg-primary text-dark-bg font-bold py-3 px-8 rounded-lg text-lg hover:bg-white hover:shadow-lg transition-all duration-300 transform hover:scale-105 shadow-glow-primary">
+                        VER TODO O LOOT
+                    </Link>
+                </div>
             </section>
 
             {/* Categories */}
@@ -52,8 +59,9 @@ const HomePage: React.FC = () => {
                 <h2 className="text-3xl font-press-start text-white mb-6 text-center">Explorar Categorias</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                     {categories.map(category => (
-                        <Link key={category.id} to={`/products?category=${category.slug}`} className="bg-dark-card border-2 border-dark-border p-6 rounded-lg text-center font-semibold text-white hover:border-secondary hover:shadow-glow-secondary transition-all duration-300">
-                            {category.name}
+                        <Link key={category.id} to={`/products?category=${category.slug}`} className="relative aspect-video rounded-lg overflow-hidden group flex items-center justify-center p-4 text-center font-bold text-white transition-all duration-300 border-2 border-dark-border hover:border-secondary">
+                            <div className="absolute inset-0 bg-dark-card group-hover:bg-secondary/20 transition-all duration-300"></div>
+                            <span className="relative z-10 text-lg group-hover:scale-110 transition-transform duration-300">{category.name}</span>
                         </Link>
                     ))}
                 </div>

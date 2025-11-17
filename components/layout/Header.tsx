@@ -23,7 +23,7 @@ const Header: React.FC = () => {
         `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${isActive ? 'text-primary bg-dark-border' : 'text-gray-300 hover:text-primary'}`;
 
     return (
-        <header className="bg-dark-card border-b-2 border-dark-border shadow-lg sticky top-0 z-50">
+        <header className="bg-dark-card/80 backdrop-blur-sm border-b-2 border-dark-border shadow-lg sticky top-0 z-50">
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between h-20">
                     <div className="flex-shrink-0">

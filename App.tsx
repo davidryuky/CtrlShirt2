@@ -8,6 +8,7 @@ import { UserRole } from './types';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import AdminLayout from './components/admin/AdminLayout';
+import MobileNav from './components/layout/MobileNav';
 
 // Import Public Pages
 import HomePage from './pages/public/HomePage';
@@ -37,10 +38,11 @@ import AdminSettingsPage from './pages/admin/AdminSettingsPage';
 const PublicLayout: React.FC = () => (
   <div className="flex flex-col min-h-screen">
     <Header />
-    <main className="flex-grow container mx-auto px-4 py-8">
+    <main className="flex-grow container mx-auto px-4 py-8 pb-24 md:pb-8">
       <Outlet />
     </main>
     <Footer />
+    <MobileNav />
   </div>
 );
 
