@@ -43,7 +43,7 @@ const HomePage: React.FC = () => {
             >
                 <div className="absolute inset-0 bg-dark-bg bg-opacity-70 backdrop-blur-xs"></div>
                 <div className="relative z-10">
-                    <h1 className="text-4xl md:text-6xl font-press-start text-primary mb-4 drop-shadow-lg animate-hologram">NEW LOOT DROPPED!</h1>
+                    <h1 className="text-4xl md:text-6xl font-press-start text-primary mb-4 drop-shadow-lg animate-hologram">Player 1, Press Start</h1>
                     <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-8">
                         As melhores estampas do universo geek, com qualidade lendária para o seu inventário.
                     </p>
@@ -56,13 +56,17 @@ const HomePage: React.FC = () => {
             {/* Categories */}
             <section>
                 <h2 className="text-3xl font-press-start text-white mb-6 text-center">Explorar Categorias</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                     {categories.map(category => (
                         <Link key={category.id} to={`/products?category=${category.slug}`} className="relative aspect-video rounded-lg overflow-hidden group flex items-center justify-center p-4 text-center font-bold text-white transition-all duration-300 border-2 border-dark-border hover:border-secondary">
                             <div className="absolute inset-0 bg-dark-card group-hover:bg-secondary/20 transition-all duration-300"></div>
                             <span className="relative z-10 text-lg group-hover:scale-110 transition-transform duration-300">{category.name}</span>
                         </Link>
                     ))}
+                    <Link to="/products" className="relative aspect-video rounded-lg overflow-hidden group flex items-center justify-center p-4 text-center font-bold text-white transition-all duration-300 border-2 border-dark-border hover:border-accent">
+                        <div className="absolute inset-0 bg-dark-card group-hover:bg-accent/20 transition-all duration-300"></div>
+                        <span className="relative z-10 text-lg group-hover:scale-110 transition-transform duration-300">Ver Todo Loot</span>
+                    </Link>
                 </div>
             </section>
 

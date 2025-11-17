@@ -96,6 +96,11 @@ const ProductDetailPage: React.FC = () => {
                     <h1 className="text-4xl font-bold text-white mb-2">{product.name}</h1>
                     <p className="text-4xl font-bold text-accent mb-6">R$ {product.price.toFixed(2).replace('.', ',')}</p>
                     
+                    <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-white mb-2">Descrição</h3>
+                        <p className="text-gray-300 leading-relaxed">{product.description}</p>
+                    </div>
+
                     {/* Size Selector */}
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold text-white mb-2">Tamanho:</h3>
@@ -123,14 +128,6 @@ const ProductDetailPage: React.FC = () => {
                         ADICIONAR AO CARRINHO
                     </button>
                     {notification && <p className="text-center mt-4 text-accent">{notification}</p>}
-                </div>
-            </div>
-
-            {/* Description */}
-            <div className="mt-12">
-                <h3 className="text-2xl font-bold text-white mb-4">Descrição do Produto</h3>
-                <div className="bg-dark-card p-6 rounded-lg border border-dark-border">
-                    <p className="text-gray-300 leading-relaxed">{product.description}</p>
                 </div>
             </div>
             
