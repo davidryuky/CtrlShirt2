@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Product, Category } from '../../types';
@@ -48,6 +47,18 @@ const HomePage: React.FC = () => {
                 </Link>
             </section>
 
+            {/* Categories */}
+            <section>
+                <h2 className="text-3xl font-press-start text-white mb-6 text-center">Explorar Categorias</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    {categories.map(category => (
+                        <Link key={category.id} to={`/products?category=${category.slug}`} className="bg-dark-card border-2 border-dark-border p-6 rounded-lg text-center font-semibold text-white hover:border-secondary hover:shadow-glow-secondary transition-all duration-300">
+                            {category.name}
+                        </Link>
+                    ))}
+                </div>
+            </section>
+
             {/* Featured Products */}
             <section>
                 <h2 className="text-3xl font-press-start text-white mb-6">Itens em Destaque</h2>
@@ -64,18 +75,6 @@ const HomePage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {newArrivals.map(product => (
                         <ProductCard key={product.id} product={product} />
-                    ))}
-                </div>
-            </section>
-
-            {/* Categories */}
-            <section>
-                <h2 className="text-3xl font-press-start text-white mb-6 text-center">Explorar Categorias</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    {categories.map(category => (
-                        <Link key={category.id} to={`/products?category=${category.slug}`} className="bg-dark-card border-2 border-dark-border p-6 rounded-lg text-center font-semibold text-white hover:border-secondary hover:shadow-glow-secondary transition-all duration-300">
-                            {category.name}
-                        </Link>
                     ))}
                 </div>
             </section>
