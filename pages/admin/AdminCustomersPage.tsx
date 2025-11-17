@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { mockApi } from '../../services/mockApi';
 import { User } from '../../types';
 
@@ -45,7 +46,7 @@ const AdminCustomersPage: React.FC = () => {
                                 <td className="p-4 text-gray-400">{user.email}</td>
                                 <td className="p-4 uppercase text-xs font-bold">{user.role}</td>
                                 <td className="p-4">
-                                    <button className="text-primary hover:underline disabled:opacity-50" disabled>Editar</button>
+                                    <Link to={`/admin/customers/${user.id}`} className="text-primary hover:underline">Detalhes</Link>
                                 </td>
                             </tr>
                         ))}

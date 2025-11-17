@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { mockApi } from '../../services/mockApi';
+import { Order } from '../../types';
 
 interface DashboardStats {
     totalRevenue: number;
@@ -22,20 +24,25 @@ const StatCard: React.FC<{ title: string; value: string | number; icon: React.Re
 
 const DashboardPage: React.FC = () => {
     const [stats, setStats] = useState<DashboardStats | null>(null);
+    const [recentOrders, setRecentOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchStats = async () => {
+        const fetchDashboardData = async () => {
             try {
-                const data = await mockApi.getDashboardStats();
-                setStats(data);
+                const [statsData, ordersData] = await Promise.all([
+                    mockApi.getDashboardStats(),
+                    mockApi.getOrders()
+                ]);
+                setStats(statsData);
+                setRecentOrders(ordersData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5));
             } catch (error) {
-                console.error("Failed to fetch dashboard stats", error);
+                console.error("Failed to fetch dashboard data", error);
             } finally {
                 setLoading(false);
             }
         };
-        fetchStats();
+        fetchDashboardData();
     }, []);
 
     if (loading) {
@@ -71,7 +78,36 @@ const DashboardPage: React.FC = () => {
                     icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>}
                 />
             </div>
-            {/* Can add more components here like recent orders list or charts */}
+            
+            <div className="mt-8">
+                <h2 className="text-2xl font-bold text-white mb-4">Pedidos Recentes</h2>
+                <div className="bg-dark-card border border-dark-border rounded-lg overflow-x-auto">
+                    <table className="w-full text-left">
+                        <thead className="bg-dark-border">
+                            <tr>
+                                <th className="p-4">Pedido ID</th>
+                                <th className="p-4">Data</th>
+                                <th className="p-4">Total</th>
+                                <th className="p-4">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {recentOrders.map(order => (
+                                <tr key={order.id} className="border-b border-dark-border last:border-b-0">
+                                    <td className="p-4 font-mono text-sm text-primary hover:underline">
+                                        <Link to={`/admin/orders/${order.id}`}>{order.id}</Link>
+                                    </td>
+                                    <td className="p-4 text-gray-400">{new Date(order.createdAt).toLocaleDateString()}</td>
+                                    <td className="p-4 text-accent">R$ {order.total.toFixed(2).replace('.', ',')}</td>
+                                    <td className="p-4">
+                                        <span className="font-semibold">{order.status}</span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 };

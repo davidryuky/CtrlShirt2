@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { mockApi } from '../../services/mockApi';
 import { Order, User, OrderStatus } from '../../types';
 
@@ -28,12 +29,15 @@ const AdminOrdersPage: React.FC = () => {
 
     const getUserName = (userId: string) => users.find(u => u.id === userId)?.name || 'Cliente Deletado';
 
-    const handleStatusChange = (orderId: string, newStatus: OrderStatus) => {
-        // In a real app, this would be an API call. Here we just update the state for demonstration.
-        setOrders(prevOrders => prevOrders.map(order => 
-            order.id === orderId ? { ...order, status: newStatus } : order
-        ));
-        alert("Status do pedido alterado (simulação).");
+    const handleStatusChange = async (order: Order, newStatus: OrderStatus) => {
+        const updatedOrder = { ...order, status: newStatus };
+        try {
+            await mockApi.updateOrder(updatedOrder);
+            setOrders(prevOrders => prevOrders.map(o => o.id === order.id ? updatedOrder : o));
+        } catch (error) {
+            console.error("Failed to update order status:", error);
+            alert("Erro ao atualizar status do pedido.");
+        }
     };
 
     if (loading) return <p>Carregando pedidos...</p>;
@@ -55,14 +59,16 @@ const AdminOrdersPage: React.FC = () => {
                     <tbody>
                         {orders.map(order => (
                             <tr key={order.id} className="border-b border-dark-border last:border-b-0">
-                                <td className="p-4 font-mono text-sm text-gray-400">{order.id}</td>
+                                <td className="p-4 font-mono text-sm text-primary hover:underline">
+                                    <Link to={`/admin/orders/${order.id}`}>{order.id}</Link>
+                                </td>
                                 <td className="p-4 font-semibold">{getUserName(order.userId)}</td>
                                 <td className="p-4 text-gray-400">{new Date(order.createdAt).toLocaleDateString()}</td>
                                 <td className="p-4 text-accent">R$ {order.total.toFixed(2).replace('.', ',')}</td>
                                 <td className="p-4">
                                      <select 
                                         value={order.status} 
-                                        onChange={(e) => handleStatusChange(order.id, e.target.value as OrderStatus)}
+                                        onChange={(e) => handleStatusChange(order, e.target.value as OrderStatus)}
                                         className={`w-full bg-dark-bg border border-dark-border rounded-md p-2 text-white focus:ring-primary focus:border-primary`}
                                      >
                                         {Object.values(OrderStatus).map(status => (

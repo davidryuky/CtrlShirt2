@@ -73,19 +73,24 @@ const AdminProductsPage: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map(product => (
-                            <tr key={product.id} className="border-b border-dark-border last:border-b-0">
-                                <td className="p-4"><img src={product.images[0]} alt={product.name} className="w-16 h-16 object-cover rounded-md" /></td>
-                                <td className="p-4 font-semibold">{product.name}</td>
-                                <td className="p-4 text-gray-400">{getCategoryName(product.categoryId)}</td>
-                                <td className="p-4 text-accent">R$ {product.price.toFixed(2)}</td>
-                                <td className="p-4">{getTotalStock(product.sizes)}</td>
-                                <td className="p-4 space-x-2">
-                                    <Link to={`/admin/products/edit/${product.id}`} className="text-primary hover:underline">Editar</Link>
-                                    <button onClick={() => handleDelete(product.id)} className="text-secondary hover:underline">Deletar</button>
-                                </td>
-                            </tr>
-                        ))}
+                        {products.map(product => {
+                            const totalStock = getTotalStock(product.sizes);
+                            return (
+                                <tr key={product.id} className="border-b border-dark-border last:border-b-0">
+                                    <td className="p-4"><img src={product.images[0]} alt={product.name} className="w-16 h-16 object-cover rounded-md" /></td>
+                                    <td className="p-4 font-semibold">{product.name}</td>
+                                    <td className="p-4 text-gray-400">{getCategoryName(product.categoryId)}</td>
+                                    <td className="p-4 text-accent">R$ {product.price.toFixed(2).replace('.', ',')}</td>
+                                    <td className={`p-4 ${totalStock > 0 ? '' : 'text-secondary'}`}>
+                                        {totalStock > 0 ? totalStock : 'Esgotado'}
+                                    </td>
+                                    <td className="p-4 space-x-2">
+                                        <Link to={`/admin/products/edit/${product.id}`} className="text-primary hover:underline">Editar</Link>
+                                        <button onClick={() => handleDelete(product.id)} className="text-secondary hover:underline">Deletar</button>
+                                    </td>
+                                </tr>
+                            )
+                        })}
                     </tbody>
                 </table>
             </div>

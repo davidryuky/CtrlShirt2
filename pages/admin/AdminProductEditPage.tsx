@@ -62,16 +62,34 @@ const AdminProductEditPage: React.FC = () => {
         const newImages = [...product.images];
         newImages[index] = value;
         setProduct(prev => ({ ...prev, images: newImages }));
-    }
+    };
+
+    const addImageField = () => {
+        setProduct(prev => ({ ...prev, images: [...prev.images, ''] }));
+    };
+
+    const removeImageField = (index: number) => {
+        if (product.images.length <= 1) return; // Keep at least one
+        setProduct(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }));
+    };
+
+    const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const tags = e.target.value.split(',').map(tag => tag.trim());
+        setProduct(prev => ({ ...prev, tags }));
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         try {
+            const productToSave = {
+                ...product,
+                images: product.images.filter(img => img.trim() !== ''), // remove empty image fields
+            };
             if (isNew) {
-                await mockApi.createProduct(product as Omit<Product, 'id' | 'slug' | 'reviews'>);
+                await mockApi.createProduct(productToSave as Omit<Product, 'id' | 'slug' | 'reviews'>);
             } else {
-                await mockApi.updateProduct(product as Product);
+                await mockApi.updateProduct(productToSave as Product);
             }
             navigate('/admin/products');
         } catch (error) {
@@ -128,9 +146,21 @@ const AdminProductEditPage: React.FC = () => {
                 <div>
                     <label className="block text-sm font-medium text-gray-300">Imagens (URLs)</label>
                     {product.images.map((img, index) => (
-                        <input key={index} type="text" value={img} onChange={(e) => handleImageChange(index, e.target.value)} placeholder="https://..." className="mt-1 block w-full bg-dark-bg border-dark-border rounded-md shadow-sm p-2 mb-2"/>
+                        <div key={index} className="flex items-center gap-2 mb-2">
+                            <input type="text" value={img} onChange={(e) => handleImageChange(index, e.target.value)} placeholder="https://..." className="flex-grow block w-full bg-dark-bg border-dark-border rounded-md shadow-sm p-2"/>
+                            <button type="button" onClick={() => removeImageField(index)} className="bg-secondary text-white font-bold p-2 rounded-md hover:bg-pink-600 transition-colors" disabled={product.images.length <= 1}>
+                                &#x2715;
+                            </button>
+                        </div>
                     ))}
-                    {/* A simple implementation allows only one image for now to keep the UI clean */}
+                    <button type="button" onClick={addImageField} className="text-sm text-primary hover:underline mt-2">
+                        + Adicionar Imagem
+                    </button>
+                </div>
+                
+                <div>
+                    <label htmlFor="tags" className="block text-sm font-medium text-gray-300">Tags (separadas por vírgula)</label>
+                    <input type="text" id="tags" name="tags" value={product.tags.join(', ')} onChange={handleTagsChange} className="mt-1 block w-full bg-dark-bg border-dark-border rounded-md shadow-sm p-2" />
                 </div>
 
 

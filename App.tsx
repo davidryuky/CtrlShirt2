@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { HashRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AppProvider, useAppContext } from './context/AppContext';
@@ -32,7 +33,9 @@ import AdminProductsPage from './pages/admin/AdminProductsPage';
 import AdminProductEditPage from './pages/admin/AdminProductEditPage';
 import AdminCategoriesPage from './pages/admin/AdminCategoriesPage';
 import AdminOrdersPage from './pages/admin/AdminOrdersPage';
+import AdminOrderDetailPage from './pages/admin/AdminOrderDetailPage';
 import AdminCustomersPage from './pages/admin/AdminCustomersPage';
+import AdminCustomerDetailPage from './pages/admin/AdminCustomerDetailPage';
 import AdminCouponsPage from './pages/admin/AdminCouponsPage';
 import AdminSettingsPage from './pages/admin/AdminSettingsPage';
 
@@ -47,8 +50,6 @@ const PublicLayout: React.FC = () => (
   </div>
 );
 
-// FIX: Updated ProtectedRoute to accept optional children.
-// This allows it to function as both a layout route and a wrapper for role-specific checks.
 const ProtectedRoute: React.FC<{ allowedRoles: UserRole[]; children?: React.ReactNode }> = ({ allowedRoles, children }) => {
   const { user } = useAppContext();
   if (!user || !allowedRoles.includes(user.role)) {
@@ -87,7 +88,9 @@ function App() {
             <Route path="products/edit/:id" element={<AdminProductEditPage />} />
             <Route path="categories" element={<AdminCategoriesPage />} />
             <Route path="orders" element={<AdminOrdersPage />} />
+            <Route path="orders/:id" element={<AdminOrderDetailPage />} />
             <Route path="customers" element={<AdminCustomersPage />} />
+            <Route path="customers/:id" element={<AdminCustomerDetailPage />} />
             <Route path="coupons" element={<AdminCouponsPage />} />
             <Route path="settings" element={<ProtectedRoute allowedRoles={[UserRole.ADMIN]}><AdminSettingsPage /></ProtectedRoute>} />
           </Route>

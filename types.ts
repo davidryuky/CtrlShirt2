@@ -1,4 +1,5 @@
 
+
 export interface Category {
   id: string;
   name: string;
@@ -55,7 +56,7 @@ export interface CartItem {
 }
 
 export interface OrderItem extends CartItem {
-  id: string;
+  id?: string;
 }
 
 export interface ShippingAddress {
@@ -91,4 +92,11 @@ export interface Coupon {
   code: string;
   discountPercentage: number;
   isActive: boolean;
+}
+
+export interface Settings {
+  storeName: string;
+  storeDescription: string;
+  contactEmail: string;
+  shippingCost: number;
 }

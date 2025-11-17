@@ -2,12 +2,50 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { mockApi } from '../../services/mockApi';
 import { Category } from '../../types';
 
+const CategoryModal: React.FC<{
+    category: Category | null;
+    onClose: () => void;
+    onSave: (category: Category | Omit<Category, 'id' | 'slug'>) => void;
+}> = ({ category, onClose, onSave }) => {
+    const [name, setName] = useState(category?.name || '');
+    
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!name.trim()) return;
+        onSave(category ? { ...category, name } : { name });
+    };
+
+    return (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-dark-card border border-dark-border rounded-lg p-6 w-full max-w-md">
+                <h2 className="text-xl font-bold mb-4">{category ? 'Editar' : 'Nova'} Categoria</h2>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="categoryName" className="block text-sm font-medium text-gray-300">Nome</label>
+                    <input
+                        id="categoryName"
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Nome da categoria"
+                        className="mt-1 block w-full bg-dark-bg border-dark-border rounded-md shadow-sm p-2"
+                        required
+                    />
+                    <div className="flex justify-end gap-4 mt-6">
+                        <button type="button" onClick={onClose} className="bg-dark-border text-white font-bold py-2 px-4 rounded-md hover:bg-gray-700 transition-colors">Cancelar</button>
+                        <button type="submit" className="bg-primary text-dark-bg font-bold py-2 px-4 rounded-md hover:bg-white transition-colors">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+
 const AdminCategoriesPage: React.FC = () => {
-    // This is a simplified implementation for a demo.
-    // In a real app, you would have dedicated edit/delete functions calling the API.
     const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
-    const [newCategoryName, setNewCategoryName] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
     const fetchCategories = useCallback(async () => {
         setLoading(true);
@@ -25,38 +63,56 @@ const AdminCategoriesPage: React.FC = () => {
         fetchCategories();
     }, [fetchCategories]);
 
-    const handleCreate = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!newCategoryName.trim()) return;
-        alert("A criação/edição de categorias é uma demonstração. A API mock não suporta isso ainda.");
-        // Mock implementation:
-        const newCategory = { id: Date.now().toString(), name: newCategoryName, slug: newCategoryName.toLowerCase().replace(/ /g, '-') };
-        setCategories([...categories, newCategory]);
-        setNewCategoryName('');
+    const handleSave = async (categoryData: Category | Omit<Category, 'id' | 'slug'>) => {
+        try {
+            if ('id' in categoryData) {
+                await mockApi.updateCategory(categoryData);
+            } else {
+                await mockApi.createCategory(categoryData);
+            }
+            fetchCategories();
+        } catch (error) {
+            console.error("Failed to save category:", error);
+            alert("Erro ao salvar categoria.");
+        } finally {
+            closeModal();
+        }
+    };
+
+    const handleDelete = async (categoryId: string) => {
+        if (window.confirm('Tem certeza que deseja deletar esta categoria? Isso pode afetar produtos existentes.')) {
+            try {
+                await mockApi.deleteCategory(categoryId);
+                fetchCategories();
+            } catch (error) {
+                console.error("Failed to delete category:", error);
+                alert("Erro ao deletar categoria.");
+            }
+        }
+    };
+
+    const openModal = (category: Category | null = null) => {
+        setEditingCategory(category);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setEditingCategory(null);
+        setIsModalOpen(false);
     };
 
     if (loading) return <p>Carregando categorias...</p>;
 
     return (
         <div>
-            <h1 className="text-3xl font-press-start text-white mb-8">Gerenciar Categorias</h1>
-            
-            <div className="mb-8 bg-dark-card p-6 rounded-lg border border-dark-border">
-                <h2 className="text-xl font-bold mb-4">Nova Categoria</h2>
-                <form onSubmit={handleCreate} className="flex gap-4">
-                    <input 
-                        type="text" 
-                        value={newCategoryName}
-                        onChange={(e) => setNewCategoryName(e.target.value)}
-                        placeholder="Nome da categoria"
-                        className="flex-grow bg-dark-bg border-dark-border rounded-md shadow-sm p-2"
-                    />
-                    <button type="submit" className="bg-primary text-dark-bg font-bold py-2 px-4 rounded-md hover:bg-white transition-colors">
-                        Criar
-                    </button>
-                </form>
+            {isModalOpen && <CategoryModal category={editingCategory} onClose={closeModal} onSave={handleSave} />}
+            <div className="flex justify-between items-center mb-8">
+                <h1 className="text-3xl font-press-start text-white">Gerenciar Categorias</h1>
+                 <button onClick={() => openModal()} className="bg-primary text-dark-bg font-bold py-2 px-4 rounded-md hover:bg-white transition-colors">
+                    + Nova Categoria
+                </button>
             </div>
-
+            
             <div className="bg-dark-card border border-dark-border rounded-lg overflow-x-auto">
                 <table className="w-full text-left">
                     <thead className="bg-dark-border">
@@ -74,8 +130,8 @@ const AdminCategoriesPage: React.FC = () => {
                                 <td className="p-4 font-semibold">{category.name}</td>
                                 <td className="p-4 text-gray-400">{category.slug}</td>
                                 <td className="p-4 space-x-2">
-                                    <button className="text-primary hover:underline disabled:opacity-50" disabled>Editar</button>
-                                    <button className="text-secondary hover:underline disabled:opacity-50" disabled>Deletar</button>
+                                    <button onClick={() => openModal(category)} className="text-primary hover:underline">Editar</button>
+                                    <button onClick={() => handleDelete(category.id)} className="text-secondary hover:underline">Deletar</button>
                                 </td>
                             </tr>
                         ))}

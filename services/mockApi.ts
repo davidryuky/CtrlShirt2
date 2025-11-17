@@ -1,4 +1,4 @@
-import { Product, Category, Order, User, Coupon, UserRole, OrderStatus, ProductSize, Review } from '../types';
+import { Product, Category, Order, User, Coupon, UserRole, OrderStatus, ProductSize, Review, Settings } from '../types';
 
 const initialCategories: Category[] = [
   { id: '1', name: 'Games Retrô', slug: 'games-retro' },
@@ -48,9 +48,7 @@ const initialUsers: User[] = [
 ];
 
 const initialOrders: Order[] = [
-  // FIX: Added missing 'image' property to conform to OrderItem type.
   { id: '1', userId: '3', items: [{...initialProducts[0], image: initialProducts[0].images[0], productId: '1', size: 'M', quantity: 1, id: 'item-1'}], subtotal: 79.90, shipping: 15.00, total: 94.90, status: OrderStatus.DELIVERED, shippingAddress: { fullName: 'Customer Test', address: '123 Test St', city: 'Testville', postalCode: '12345-678', country: 'Brasil' }, createdAt: new Date(Date.now() - 86400000 * 5).toISOString() },
-  // FIX: Added missing 'image' property to conform to OrderItem type.
   { id: '2', userId: '3', items: [{...initialProducts[2], image: initialProducts[2].images[0], productId: '3', size: 'G', quantity: 2, id: 'item-2'}], subtotal: 169.80, shipping: 18.00, total: 187.80, status: OrderStatus.SHIPPED, shippingAddress: { fullName: 'Customer Test', address: '123 Test St', city: 'Testville', postalCode: '12345-678', country: 'Brasil' }, createdAt: new Date(Date.now() - 86400000 * 2).toISOString() },
 ];
 
@@ -59,6 +57,13 @@ const initialCoupons: Coupon[] = [
     { id: '2', code: 'CTRL20', discountPercentage: 20, isActive: true },
     { id: '3', code: 'EXPIRED', discountPercentage: 50, isActive: false },
 ]
+
+const initialSettings: Settings = {
+    storeName: 'CtrlShirt',
+    storeDescription: 'A complete online store for geek and nerd style t-shirts. Discover unique designs inspired by games, anime, technology, and pop culture. Find your next favorite loot!',
+    contactEmail: 'contato@ctrlshirt.com',
+    shippingCost: 15.00,
+};
 
 const SIMULATED_LATENCY = 500;
 
@@ -96,7 +101,9 @@ if (!localStorage.getItem('ctrlshirt_orders')) {
 if (!localStorage.getItem('ctrlshirt_coupons')) {
     saveToStorage('ctrlshirt_coupons', initialCoupons);
 }
-
+if (!localStorage.getItem('ctrlshirt_settings')) {
+    saveToStorage('ctrlshirt_settings', initialSettings);
+}
 
 export const mockApi = {
     // Products
@@ -165,12 +172,63 @@ export const mockApi = {
             }, SIMULATED_LATENCY);
         });
     },
+    createCategory: async (categoryData: Omit<Category, 'id' | 'slug'>): Promise<Category> => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                let categories = getFromStorage('ctrlshirt_categories', initialCategories);
+                const newCategory: Category = {
+                    ...categoryData,
+                    id: String(Date.now()),
+                    slug: categoryData.name.toLowerCase().replace(/\s+/g, '-'),
+                };
+                categories.push(newCategory);
+                saveToStorage('ctrlshirt_categories', categories);
+                resolve(newCategory);
+            }, SIMULATED_LATENCY);
+        });
+    },
+    updateCategory: async (categoryData: Category): Promise<Category> => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                let categories = getFromStorage('ctrlshirt_categories', initialCategories);
+                const index = categories.findIndex(c => c.id === categoryData.id);
+                if (index !== -1) {
+                    categories[index] = {
+                        ...categoryData,
+                        slug: categoryData.name.toLowerCase().replace(/\s+/g, '-')
+                    };
+                    saveToStorage('ctrlshirt_categories', categories);
+                    resolve(categories[index]);
+                } else {
+                    reject(new Error('Category not found'));
+                }
+            }, SIMULATED_LATENCY);
+        });
+    },
+    deleteCategory: async (categoryId: string): Promise<void> => {
+         return new Promise(resolve => {
+            setTimeout(() => {
+                let categories = getFromStorage('ctrlshirt_categories', initialCategories);
+                categories = categories.filter(c => c.id !== categoryId);
+                saveToStorage('ctrlshirt_categories', categories);
+                resolve();
+            }, SIMULATED_LATENCY);
+        });
+    },
 
     // Orders
     getOrders: async (): Promise<Order[]> => {
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve(getFromStorage('ctrlshirt_orders', initialOrders));
+            }, SIMULATED_LATENCY);
+        });
+    },
+    getOrderById: async (id: string): Promise<Order | undefined> => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                const orders = getFromStorage('ctrlshirt_orders', initialOrders);
+                resolve(orders.find(o => o.id === id));
             }, SIMULATED_LATENCY);
         });
     },
@@ -189,6 +247,21 @@ export const mockApi = {
             }, SIMULATED_LATENCY);
         });
     },
+    updateOrder: async (orderData: Order): Promise<Order> => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                let orders = getFromStorage('ctrlshirt_orders', initialOrders);
+                const index = orders.findIndex(o => o.id === orderData.id);
+                if (index !== -1) {
+                    orders[index] = orderData;
+                    saveToStorage('ctrlshirt_orders', orders);
+                    resolve(orderData);
+                } else {
+                    reject(new Error('Order not found'));
+                }
+            }, SIMULATED_LATENCY);
+        });
+    },
 
     // Users
     getUsers: async (): Promise<User[]> => {
@@ -200,12 +273,62 @@ export const mockApi = {
             }, SIMULATED_LATENCY);
         });
     },
+    getUserById: async (id: string): Promise<User | undefined> => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                const users = getFromStorage<User[]>('ctrlshirt_users', initialUsers);
+                const user = users.find(u => u.id === id);
+                if (user) {
+                    const { password, ...userWithoutPassword } = user;
+                    resolve(userWithoutPassword);
+                } else {
+                    resolve(undefined);
+                }
+            }, SIMULATED_LATENCY);
+        });
+    },
 
     // Coupons
     getCoupons: async (): Promise<Coupon[]> => {
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve(getFromStorage('ctrlshirt_coupons', initialCoupons));
+            }, SIMULATED_LATENCY);
+        });
+    },
+    createCoupon: async (couponData: Omit<Coupon, 'id'>): Promise<Coupon> => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                let coupons = getFromStorage('ctrlshirt_coupons', initialCoupons);
+                const newCoupon: Coupon = { ...couponData, id: String(Date.now()) };
+                coupons.push(newCoupon);
+                saveToStorage('ctrlshirt_coupons', coupons);
+                resolve(newCoupon);
+            }, SIMULATED_LATENCY);
+        });
+    },
+    updateCoupon: async (couponData: Coupon): Promise<Coupon> => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                let coupons = getFromStorage('ctrlshirt_coupons', initialCoupons);
+                const index = coupons.findIndex(c => c.id === couponData.id);
+                if (index !== -1) {
+                    coupons[index] = couponData;
+                    saveToStorage('ctrlshirt_coupons', coupons);
+                    resolve(couponData);
+                } else {
+                    reject(new Error('Coupon not found'));
+                }
+            }, SIMULATED_LATENCY);
+        });
+    },
+    deleteCoupon: async (couponId: string): Promise<void> => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                let coupons = getFromStorage('ctrlshirt_coupons', initialCoupons);
+                coupons = coupons.filter(c => c.id !== couponId);
+                saveToStorage('ctrlshirt_coupons', coupons);
+                resolve();
             }, SIMULATED_LATENCY);
         });
     },
@@ -234,5 +357,22 @@ export const mockApi = {
                 resolve({ totalRevenue, totalOrders, totalCustomers, newOrders });
             }, SIMULATED_LATENCY);
         });
-    }
+    },
+
+    // Settings
+    getSettings: async (): Promise<Settings> => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve(getFromStorage('ctrlshirt_settings', initialSettings));
+            }, SIMULATED_LATENCY);
+        });
+    },
+    updateSettings: async (settingsData: Settings): Promise<Settings> => {
+         return new Promise(resolve => {
+            setTimeout(() => {
+                saveToStorage('ctrlshirt_settings', settingsData);
+                resolve(settingsData);
+            }, SIMULATED_LATENCY);
+        });
+    },
 };
