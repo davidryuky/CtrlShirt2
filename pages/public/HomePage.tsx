@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Product, Category } from '../../types';
@@ -39,7 +40,7 @@ const HomePage: React.FC = () => {
             {/* Hero Section */}
             <section 
                 className="relative h-96 rounded-lg overflow-hidden flex items-center justify-center text-center p-4 border-2 border-primary shadow-glow-primary"
-                style={{ backgroundImage: "url('https://picsum.photos/seed/geek-bg/1920/1080')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+                style={{ backgroundImage: "url('https://i.postimg.cc/3xw1rSL0/Image-fx(2).jpg')", backgroundSize: 'cover', backgroundPosition: 'top' }}
             >
                 <div className="absolute inset-0 bg-dark-bg bg-opacity-70 backdrop-blur-xs"></div>
                 <div className="relative z-10">
